@@ -1,13 +1,18 @@
 package me.elmira.simpletwitterclient.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.format.DateUtils;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import me.elmira.simpletwitterclient.model.source.remote.JsonAttributes;
@@ -18,7 +23,7 @@ import static android.text.format.DateUtils.FORMAT_ABBREV_ALL;
  * Created by elmira on 3/22/17.
  */
 
-public class Tweet {
+public class Tweet implements Parcelable {
 
     private static String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
     private static SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
@@ -36,6 +41,7 @@ public class Tweet {
     private int favoriteCount;
     private boolean retweeted;
     private int retweetedCount;
+    private List<TweetMedia> medias;
 
     public Tweet() {
     }
@@ -50,16 +56,33 @@ public class Tweet {
         tweet.retweeted = jsonObject.has(JsonAttributes.Tweet.RETWEETED) && jsonObject.getBoolean(JsonAttributes.Tweet.RETWEETED);
         tweet.retweetedCount = jsonObject.has(JsonAttributes.Tweet.RETWEET_COUNT) ? jsonObject.getInt(JsonAttributes.Tweet.RETWEET_COUNT) : 0;
 
-        JSONObject media = jsonObject.has(JsonAttributes.Tweet.ENTITIES) ?
-                (jsonObject.has(JsonAttributes.Tweet.MEDIA) ? jsonObject.getJSONObject(JsonAttributes.Tweet.MEDIA) : null)
+        JSONArray mediaArray = jsonObject.has(JsonAttributes.Tweet.ENTITIES) ?
+                (jsonObject.has(JsonAttributes.Tweet.MEDIA) ? jsonObject.getJSONArray(JsonAttributes.Tweet.MEDIA) : null)
                 : null;
-        if (media != null) {
-            Log.d("Tweet", "JSON MEDIA: " + media.toString());
+        if (mediaArray != null) {
+            Log.d("Tweet", "JSON MEDIA: " + mediaArray.toString());
+            int N = mediaArray.length();
+            List<TweetMedia> mediaList = new ArrayList<>();
+
+            for (int i = 0; i < N; i++) {
+                JSONObject mediaObject = mediaArray.getJSONObject(i);
+                mediaList.add(new TweetMedia(mediaObject.getString("type"), mediaObject.getString("media_url")));
+            }
+
+            tweet.setMedias(mediaList);
         }
 
         tweet.user = User.fromJSON(jsonObject.getJSONObject(JsonAttributes.Tweet.USER));
         tweet.sync = true;
         return tweet;
+    }
+
+    public List<TweetMedia> getMedias() {
+        return medias;
+    }
+
+    public void setMedias(List<TweetMedia> medias) {
+        this.medias = medias;
     }
 
     public String getBody() {
@@ -138,6 +161,10 @@ public class Tweet {
         this.retweetedCount = retweetedCount;
     }
 
+    public boolean hasMedia() {
+        return medias != null && medias.size() > 0;
+    }
+
     public String getRelativeTimeAgo() {
 
         String relativeDate = "";
@@ -158,16 +185,13 @@ public class Tweet {
 
         Tweet tweet = (Tweet) o;
 
-        if (body != null ? !body.equals(tweet.body) : tweet.body != null) return false;
-        return user != null ? user.equals(tweet.user) : tweet.user == null;
+        return uid == tweet.uid;
 
     }
 
     @Override
     public int hashCode() {
-        int result = body != null ? body.hashCode() : 0;
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        return result;
+        return (int) (uid ^ (uid >>> 32));
     }
 
     @Override
@@ -184,4 +208,47 @@ public class Tweet {
                 ", user=" + (user == null ? "empty" : user.toString()) +
                 '}';
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.body);
+        dest.writeLong(this.uid);
+        dest.writeString(this.createdAt);
+        dest.writeParcelable(this.user, flags);
+        dest.writeByte(this.sync ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.favorite ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.favoriteCount);
+        dest.writeByte(this.retweeted ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.retweetedCount);
+    }
+
+    protected Tweet(Parcel in) {
+        this.body = in.readString();
+        this.uid = in.readLong();
+        this.createdAt = in.readString();
+        this.user = in.readParcelable(User.class.getClassLoader());
+        this.sync = in.readByte() != 0;
+        this.favorite = in.readByte() != 0;
+        this.favoriteCount = in.readInt();
+        this.retweeted = in.readByte() != 0;
+        this.retweetedCount = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Tweet> CREATOR = new Parcelable.Creator<Tweet>() {
+        @Override
+        public Tweet createFromParcel(Parcel source) {
+            return new Tweet(source);
+        }
+
+        @Override
+        public Tweet[] newArray(int size) {
+            return new Tweet[size];
+        }
+    };
 }

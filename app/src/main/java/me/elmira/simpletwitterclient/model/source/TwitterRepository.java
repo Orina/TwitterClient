@@ -60,7 +60,7 @@ public class TwitterRepository implements TwitterDataSource {
             }
         });
 
-        /*if (mCurrentUser == null) {
+        if (mCurrentUser == null) {
             loadCurrentUser(new LoadCurrentUserCallback() {
                 @Override
                 public void onUserLoaded(User user) {
@@ -72,7 +72,7 @@ public class TwitterRepository implements TwitterDataSource {
                     //do nothing
                 }
             });
-        }*/
+        }
     }
 
     @Override
@@ -104,6 +104,7 @@ public class TwitterRepository implements TwitterDataSource {
     @Override
     public void createTweet(Tweet tweet, final CreateTweetCallback callback) {
         final long tempId = tweet.getUid();
+
         mLocalDataSource.createTweet(tweet, null);
         addTweetToCacheTop(tweet);
 
@@ -149,6 +150,10 @@ public class TwitterRepository implements TwitterDataSource {
                 callback.onFailure();
             }
         });
+    }
+
+    public void syncTweets(){
+        //mLocalDataSource.
     }
 
     @Override

@@ -21,6 +21,8 @@ public class TweetViewHolderSync extends RecyclerView.ViewHolder {
 
     private ViewDataBinding binding;
     private ImageView imageView;
+    private ImageView mediaImage;
+
     int imageViewWidthPx;
 
     public TweetViewHolderSync(View itemView, int imageViewWidthPx) {
@@ -28,6 +30,7 @@ public class TweetViewHolderSync extends RecyclerView.ViewHolder {
         binding = DataBindingUtil.bind(itemView);
         this.imageViewWidthPx = imageViewWidthPx;
         imageView = (ImageView) itemView.findViewById(R.id.ivUser);
+        mediaImage = (ImageView) imageView.findViewById(R.id.ivMedia);
         imageView.getLayoutParams().width = imageViewWidthPx;
     }
 
@@ -36,12 +39,22 @@ public class TweetViewHolderSync extends RecyclerView.ViewHolder {
         binding.executePendingBindings();
 
         if (tweet.getUser() != null && tweet.getUser().getProfileImageUrl() != null) {
-
             Picasso.with(imageView.getContext()).load(tweet.getUser().getProfileImageUrl())
                     .resize(imageViewWidthPx, 0)
                     .noPlaceholder()
                     .transform(new RoundedCornersTransformation(10, 5))
                     .into(imageView);
+        }
+
+        if (tweet.hasMedia()) {
+            //mediaImage.setVisibility(View.VISIBLE);
+            Picasso.with(imageView.getContext()).load(tweet.getMedias().get(0).getMediaUrl())
+                    .noPlaceholder()
+                    .transform(new RoundedCornersTransformation(10, 5))
+                    .into(mediaImage);
+        }
+        else {
+            //mediaImage.setVisibility(View.INVISIBLE);
         }
     }
 }

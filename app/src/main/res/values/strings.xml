@@ -13,4 +13,6 @@
     <string name="load_tweets_failed">Can\'t load new tweets</string>
     <string name="load_tweets_success">Successfully loaded new tweets</string>
 
+    <string name="network_not_available">Verify your internet connection</string>
+
 </resources>

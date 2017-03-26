@@ -133,14 +133,14 @@ public class TwitterLocalDataSource implements TwitterDataSource {
     @Override
     public void createTweet(final Tweet tweet, final CreateTweetCallback callback) {
         if (tweet == null) {
-            if (callback!=null) callback.onFailure();
+            if (callback != null) callback.onFailure();
             return;
         }
         backgroundHandler.post(new Runnable() {
             @Override
             public void run() {
                 createTweetEntry(tweet);
-                if (callback!=null) callback.onTweetCreated(tweet);
+                if (callback != null) callback.onTweetCreated(tweet);
             }
         });
     }
@@ -148,14 +148,14 @@ public class TwitterLocalDataSource implements TwitterDataSource {
     @Override
     public void updateTweet(final Tweet tweet, final long tempId, final UpdateTweetCallback callback) {
         if (tweet == null) {
-            if (callback!=null) callback.onFailure();
+            if (callback != null) callback.onFailure();
             return;
         }
         backgroundHandler.post(new Runnable() {
             @Override
             public void run() {
                 updateTweetEntry(tweet, tempId);
-                if (callback!=null) callback.onTweetUpdataed(tweet);
+                if (callback != null) callback.onTweetUpdataed(tweet);
             }
         });
     }
@@ -172,7 +172,7 @@ public class TwitterLocalDataSource implements TwitterDataSource {
             contentValues.put(TwitterPersistenceContract.TweetEntry.COLUMN_NAME_BODY, tweet.getBody());
             contentValues.put(TwitterPersistenceContract.TweetEntry.COLUMN_NAME_DATE_CREATED, tweet.getCreatedAt());
             contentValues.put(TwitterPersistenceContract.TweetEntry.COLUMN_NAME_SYNC, tweet.isSync() ? 1 : 0);
-            contentValues.put(TwitterPersistenceContract.TweetEntry.COLUMN_NAME_USER_ID, tweet.getUser().getUid());
+            contentValues.put(TwitterPersistenceContract.TweetEntry.COLUMN_NAME_USER_ID, tweet.getUser() == null ? 0 : tweet.getUser().getUid());
             contentValues.put(TwitterPersistenceContract.TweetEntry.COLUMN_NAME_FAVORITE, tweet.isFavorite() ? 1 : 0);
             contentValues.put(TwitterPersistenceContract.TweetEntry.COLUMN_NAME_FAVORITE_COUNT, tweet.getFavoriteCount());
             contentValues.put(TwitterPersistenceContract.TweetEntry.COLUMN_NAME_RETWEETED, tweet.isRetweeted() ? 1 : 0);

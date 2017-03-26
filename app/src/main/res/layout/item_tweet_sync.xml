@@ -30,9 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/ivUser"
             android:layout_alignTop="@+id/ivUser"
             android:layout_marginLeft="@dimen/margin_bigger"
+            android:layout_toRightOf="@+id/ivUser"
             android:gravity="bottom"
             android:text='@{""+syncTweet.user.name}'
             android:textAppearance="@style/Tweet.UserName"/>
@@ -41,20 +41,20 @@
             android:id="@+id/tvCreatedTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignBaseline="@+id/tvUserName"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_alignParentRight="true"
             android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
             android:text="@{syncTweet.relativeTimeAgo}"
-            android:textAppearance="@style/Tweet.UserScreenName"
-            android:layout_alignBaseline="@+id/tvUserName"/>
+            android:textAppearance="@style/Tweet.UserScreenName"/>
 
         <TextView
             android:id="@+id/tvUserScreenName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvUserName"
             android:layout_alignLeft="@id/tvUserName"
+            android:layout_below="@+id/tvUserName"
             android:text='@{""+syncTweet.user.displayScreenName}'
             android:textAppearance="@style/Tweet.UserScreenName"/>
 
@@ -62,14 +62,22 @@
             android:id="@+id/tvTweetBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvUserScreenName"
             android:layout_alignLeft="@+id/tvUserScreenName"
+            android:layout_below="@+id/tvUserScreenName"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
             android:autoLink="all"
             android:linksClickable="true"
             android:text="@{syncTweet.body}"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_normal"
             android:textAppearance="@style/Tweet.Body"/>
+
+        <ImageView
+            android:id="@+id/ivMedia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tvTweetBody"
+            android:layout_below="@+id/tvTweetBody"
+            android:visibility="visible"/>
 
         <!-- Reply icon -->
 
@@ -77,9 +85,9 @@
             android:id="@+id/iconReply"
             android:layout_width="@dimen/icon_width"
             android:layout_height="@dimen/icon_width"
+            android:layout_alignLeft="@+id/ivMedia"
             android:layout_alignParentBottom="true"
-            android:layout_below="@+id/tvTweetBody"
-            android:layout_alignLeft="@+id/tvTweetBody"
+            android:layout_below="@+id/ivMedia"
             android:src="@drawable/ic_reply_white_24dp"
             android:tint="@color/icon_color_gray"/>
 
@@ -130,8 +138,8 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="@dimen/margin_small"
             android:layout_marginStart="@dimen/margin_small"
-            android:gravity="center"
             android:layout_toRightOf="@+id/ivFavorite"
+            android:gravity="center"
             android:text='@{"" +syncTweet.favoriteCount}'
             android:textColor="@{syncTweet.favorite ? @color/favorite_icon: @color/not_favorite_icon}"/>
 

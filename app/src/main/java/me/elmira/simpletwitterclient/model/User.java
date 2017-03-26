@@ -1,5 +1,8 @@
 package me.elmira.simpletwitterclient.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,12 +12,15 @@ import me.elmira.simpletwitterclient.model.source.remote.JsonAttributes;
  * Created by elmira on 3/22/17.
  */
 
-public class User {
+public class User implements Parcelable {
 
     private String name;
     private long uid;
     private String profileImageUrl;
     private String screenName;
+
+    public User() {
+    }
 
     public static User fromJSON(JSONObject jsonObject) throws JSONException {
         User user = new User();
@@ -72,7 +78,6 @@ public class User {
         User user = (User) o;
 
         return uid == user.uid;
-
     }
 
     @Override
@@ -89,4 +94,36 @@ public class User {
                 ", screenName='" + screenName + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeLong(this.uid);
+        dest.writeString(this.profileImageUrl);
+        dest.writeString(this.screenName);
+    }
+
+    protected User(Parcel in) {
+        this.name = in.readString();
+        this.uid = in.readLong();
+        this.profileImageUrl = in.readString();
+        this.screenName = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

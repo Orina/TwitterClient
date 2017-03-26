@@ -23,6 +23,7 @@ import me.elmira.simpletwitterclient.composetweet.ComposeDialogFragment;
 import me.elmira.simpletwitterclient.model.Tweet;
 import me.elmira.simpletwitterclient.model.source.TweetsLoader;
 import me.elmira.simpletwitterclient.model.source.TwitterRepository;
+import me.elmira.simpletwitterclient.util.NetworkUtil;
 import me.elmira.simpletwitterclient.viewutil.EndlessRecyclerViewScrollListener;
 import me.elmira.simpletwitterclient.viewutil.ItemOffsetDecoration;
 
@@ -91,8 +92,14 @@ public class TimelineActivity extends AppCompatActivity implements Contract.View
         mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.d(LOG_TAG, "Loading tweets from SwipeRefresh layout");
-                mPresenter.loadTweets(mTweetsAdapter.getHighestId(), 0);
+                if (NetworkUtil.isNetworkAvailable(getBaseContext())) {
+                    Log.d(LOG_TAG, "Loading tweets from SwipeRefresh layout");
+                    mPresenter.loadTweets(mTweetsAdapter.getHighestId(), 0);
+                }
+                else {
+                    showNetworkNotAvailable();
+                    mSwipeContainer.setRefreshing(false);
+                }
             }
         });
 
@@ -111,9 +118,11 @@ public class TimelineActivity extends AppCompatActivity implements Contract.View
         mEndlessScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Log.d(LOG_TAG, "Loading tweets from Endless scrolling, page: " + page);
-                Log.d(LOG_TAG, mTweetsAdapter.toString());
-                mPresenter.loadTweets(0, mTweetsAdapter.getLowestId() - 1);
+                if (NetworkUtil.isNetworkAvailable(getBaseContext())) {
+                    Log.d(LOG_TAG, "Loading tweets from Endless scrolling, page: " + page);
+                    Log.d(LOG_TAG, mTweetsAdapter.toString());
+                    mPresenter.loadTweets(0, mTweetsAdapter.getLowestId() - 1);
+                }
             }
         };
 
@@ -143,7 +152,9 @@ public class TimelineActivity extends AppCompatActivity implements Contract.View
         boolean noTweets = mTweetsAdapter.getItemCount() == 0;
         emptyFeedLayout.setVisibility(noTweets ? View.VISIBLE : View.INVISIBLE);
 
-        mPresenter.loadTweets(mTweetsAdapter.getHighestId(), 0);
+        if (NetworkUtil.isNetworkAvailable(this)) {
+            mPresenter.loadTweets(mTweetsAdapter.getHighestId(), 0);
+        }
     }
 
     @Override
@@ -155,6 +166,10 @@ public class TimelineActivity extends AppCompatActivity implements Contract.View
         FragmentManager fragmentManager = getSupportFragmentManager();
         ComposeDialogFragment fragment = ComposeDialogFragment.newInstance();
         fragment.show(fragmentManager, "compose_fragment");
+    }
+
+    private void showNetworkNotAvailable() {
+        Toast.makeText(this, R.string.network_not_available, Toast.LENGTH_SHORT).show();
     }
 
     @Override

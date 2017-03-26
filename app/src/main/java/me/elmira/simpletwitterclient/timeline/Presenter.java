@@ -83,14 +83,6 @@ public class Presenter implements Contract.Presenter,
         Log.d(LOG_TAG, "onLoadFinished()");
         // tweets are from memory cache or local data source
         mView.setTweets(data);
-
-        //start loading tweets from remote data source, take into account the last loaded tweet id
-        /*long sinceId = 0;
-        if (data != null && data.size() > 0) {
-            sinceId = data.get(0).getUid();
-        }
-        Log.d(LOG_TAG, "Loading tweets after memory cache/local data source has finished loading");
-        loadTweets(sinceId, 0);*/
     }
 
     @Override

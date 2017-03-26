@@ -45,9 +45,6 @@ dependencies {
 
     compile "com.google.guava:guava:$guavaVersion"
 
-    //google Gson library
-    compile "com.google.code.gson:gson:${gsonLibrary}"
-
     //CodePath oAuth handler
     compile 'com.codepath.libraries:android-oauth-handler:1.1.0'
 
