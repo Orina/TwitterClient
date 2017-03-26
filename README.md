@@ -37,8 +37,8 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
-* [X] Persist data in local SQLite database
-* [X] Create a ContentProvider to access and update the data
+* [X] Implemented local SQLite database entries (Tweet, User) manually without ORM
+* [X] Implemented a ContentProvider to access and update the data
 * [X] Persist data in Repository with memory cache and local/remote data sources
 * [X] Use custom Loader to load data from memory cache/local database. It extends AsyncTaskLoader.
 * [X] Use HandlerThread to access/update data in local data source (SQLite database)
