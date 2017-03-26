@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1DA1F2</color>
+    <color name="colorPrimaryDark">#1780c1</color>
+    <color name="colorAccent">#1DA1F2</color>
+
+    <color name="cursorAccent">#98ffcc</color>
+    <color name="controlNormal">#BDBDBD</color>
+    <color name="controlActivated">#FF9800</color>
+
+    <color name="not_retweeted_icon">#BDBDBD</color>
+    <color name="retweeted_icon">#00C853</color>
+
+    <color name="icon_color_gray">#BDBDBD</color>
+
+    <color name="light_gray_text">#AAB8C2</color>
+    <color name="gray_text">#657786</color>
+    <color name="dark_gray_text">#14171A</color>
+
+    <color name="not_favorite_icon">#BDBDBD</color>
+    <color name="favorite_icon">#F06292</color>
+
+    <color name="post_tweet_backg">#d1ecfc</color>
+</resources>

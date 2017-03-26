@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    tools:context="me.elmira.simpletwitterclient.composetweet.ComposeDialogFragment"
+    tools:showIn="@layout/fragment_compose">
+
+    <EditText
+        android:id="@+id/edBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:gravity="start"
+        android:hint="@string/compose_hint"
+        android:lines="5"
+        android:textAlignment="textStart"
+        android:textColorHint="@color/light_gray_text"
+        android:textAppearance="@style/Tweet.Body"
+        />
+
+    <Button
+        android:id="@+id/btnTweet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edBody"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:background="@color/colorPrimary"
+        android:text="@string/button_tweet"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        android:layout_alignParentRight="true"
+        android:enabled="false"
+        />
+
+    <TextView
+        android:id="@+id/tvRemainingCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_toLeftOf="@+id/btnTweet"
+        android:layout_below="@+id/edBody"
+        android:text="hello"
+        android:textAppearance="@style/Tweet.PostRemaining"
+        android:layout_alignBaseline="@+id/btnTweet"/>
+
+</RelativeLayout>
+
