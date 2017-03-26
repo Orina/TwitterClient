@@ -43,7 +43,7 @@ The following **additional** features are implemented:
 * [X] Use custom Loader to load data from memory cache/local database. It extends AsyncTaskLoader.
 * [X] Use HandlerThread to access/update data in local data source (SQLite database)
 * [X] Implemented MVP pattern, where Presenter inits Loader and listen to its callback.
-
+* [X] Use Heterogenous Layouts with RecyclerView for sync and not sync tweets
 
 ## Video Walkthrough
 
