@@ -52,7 +52,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://imgur.com/a/HHPZi' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/Orina/TwitterClient/blob/master/twitter-client-4-elmira.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
