@@ -10,8 +10,8 @@ import android.widget.Toast;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
 import me.elmira.simpletwitterclient.R;
+import me.elmira.simpletwitterclient.home.HomeActivity;
 import me.elmira.simpletwitterclient.model.source.remote.TwitterClient;
-import me.elmira.simpletwitterclient.timeline.TimelineActivity;
 
 /**
  * Created by elmira on 3/22/17.
@@ -40,10 +40,8 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
     @Override
     public void onLoginSuccess() {
         Log.d(LOG_TAG, "onLoginSuccess()");
-        Toast.makeText(this, R.string.login_to_twitter_success, Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(this, TimelineActivity.class);
+        Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
-        //finish();
     }
 
     // OAuth authentication flow failed, handle the error

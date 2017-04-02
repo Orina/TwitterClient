@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Twitter client</string>
-    <string name="empty_feed">No loaded tweets</string>
+    <string name="empty_feed">No data to display</string>
     <string name="login_label">Connect to Twitter</string>
     <string name="title_activity_compose">ComposeActivity</string>
     <string name="button_tweet">Tweet</string>
+    <string name="button_reply">Reply</string>
     <string name="compose_hint">What\'s happening?</string>
     <string name="compose_title">Compose new tweet</string>
 
@@ -14,5 +15,37 @@
     <string name="load_tweets_success">Successfully loaded new tweets</string>
 
     <string name="network_not_available">Verify your internet connection</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="tab_home">Home</string>
+    <string name="tab_mentions">Mentions</string>
+
+    <string name="title_activity_user_details">UserDetailsActivity</string>
+
+    <string name="tab_tweets">Tweets</string>
+    <string name="tab_following">Following</string>
+    <string name="tab_followers">Followers</string>
+
+    <string name="reply_to">Reply to %1$s</string>
+    <string name="reply_sent_successfully">Reply sent successfully</string>
+    <string name="load_mentions_failed">Can\'t load mentions</string>
+    <string name="load_users_failed">Can\'t load users</string>
+
+    <string name="profile">Profile</string>
+    <string name="hometimeline">Home Timeline</string>
+    <string name="mentions">Mentions</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="search_hint">Search Twitter</string>
+    <string name="search_app_label">Twitter client</string>
+    <string name="action_search">Search</string>
+    <string name="empty_search">No results found</string>
+    <string name="search_tweets_failed">Can\'t search tweets</string>
+
+    <string name="action_loading">Loading...</string>
 
 </resources>

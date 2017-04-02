@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "me.elmira.simpletwitterclient"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -47,10 +47,6 @@ dependencies {
 
     //CodePath oAuth handler
     compile 'com.codepath.libraries:android-oauth-handler:1.1.0'
-
-    // Glide
-    //compile 'com.github.bumptech.glide:glide:3.7.0'
-    //compile 'jp.wasabeef:glide-transformations:2.0.2'
 
     //Chrome custom tabs
     compile "com.android.support:customtabs:${supportLibraryVersion}"

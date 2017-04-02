@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="user"
+            type="me.elmira.simpletwitterclient.model.User"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivUser"
+            android:layout_width="@dimen/tweet_image_width"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignTop="@+id/ivUser"
+            android:layout_marginLeft="@dimen/margin_bigger"
+            android:layout_toRightOf="@+id/ivUser"
+            android:gravity="bottom"
+            android:text='@{""+user.name}'
+            android:textAppearance="@style/Tweet.UserName"/>
+
+        <ImageView
+            android:id="@+id/ivFollowing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:src="@drawable/ic_person_white_24dp"
+            android:background="@drawable/following_icon_bg"/>
+
+        <TextView
+            android:id="@+id/tvUserScreenName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tvUserName"
+            android:layout_below="@+id/tvUserName"
+            android:text='@{""+user.displayScreenName}'
+            android:textAppearance="@style/Tweet.UserScreenName"/>
+
+        <TextView
+            android:id="@+id/tvUserDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tvUserScreenName"
+            android:layout_below="@+id/tvUserScreenName"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:autoLink="all"
+            android:linksClickable="true"
+            android:text="@{user.description}"
+            android:textAppearance="@style/Tweet.Body"/>
+
+    </RelativeLayout>
+
+</layout>

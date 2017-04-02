@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="240dp">
+
+    <ImageView
+        android:id="@+id/ivDrawerHeader"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/tvUserScreenName"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin_bigger"
+        android:textAppearance="@style/Tweet.UserName"
+        android:textColor="@android:color/white"/>
+
+    <TextView
+        android:id="@+id/tvUserScreenName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/margin_bigger"
+        android:layout_marginLeft="@dimen/margin_bigger"
+        android:textAppearance="@style/Tweet.UserScreenName"
+        android:textColor="@android:color/white"/>
+
+</RelativeLayout>

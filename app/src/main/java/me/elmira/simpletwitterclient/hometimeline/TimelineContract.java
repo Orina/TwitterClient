@@ -1,4 +1,4 @@
-package me.elmira.simpletwitterclient.timeline;
+package me.elmira.simpletwitterclient.hometimeline;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import me.elmira.simpletwitterclient.mvp.BaseView;
  * Created by elmira on 3/22/17.
  */
 
-public interface Contract {
+public interface TimelineContract {
 
     interface View extends BaseView<Presenter> {
 
@@ -18,25 +18,17 @@ public interface Contract {
 
         void setTweets(List<Tweet> tweets);
 
-        long getNextTweetId();
-
-        void onTweetJustPosted(Tweet tweet);
-
-        void onTweetRemotePosted(long tempId, Tweet tweet);
-
         void onLoadingFailure();
 
-        //void onNewTweetPosted(Tweet tweet);
-    }
+        boolean isActive();
 
+        void onTweetRemotePosted(Tweet tweet);
+
+        void setLoadingIndicator(boolean loading);
+    }
 
     interface Presenter extends BasePresenter {
 
         void loadTweets(long sinceId, long maxId);
-
-        void postNewTweet(String body);
-
-        void destroy();
     }
-
 }

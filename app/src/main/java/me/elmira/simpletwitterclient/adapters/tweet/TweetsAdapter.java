@@ -1,4 +1,4 @@
-package me.elmira.simpletwitterclient.timeline;
+package me.elmira.simpletwitterclient.adapters.tweet;
 
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
@@ -22,13 +22,34 @@ public class TweetsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final String LOG_TAG = "TweetsAdapter";
     private static final int imageWidthPx = (int) (Resources.getSystem().getDisplayMetrics().widthPixels * 0.18);
 
-    List<Tweet> mTweetsList;
+    private List<Tweet> mTweetsList;
 
-    public static final int SYNC_ITEM_TYPE = 0;
-    public static final int NOT_SYNC_ITEM_TYPE = 1;
+    private static final int SYNC_ITEM_TYPE = 0;
+    private static final int NOT_SYNC_ITEM_TYPE = 1;
 
     private long lowestId;
     private long highestId;
+
+    private OnTweetClickListener mListener;
+    private OnTweetReplyListener mReplyListener;
+
+    public interface OnTweetClickListener {
+        void onTweetClick(Tweet tweet);
+
+        void onIconClick(Tweet tweet, View iconView, View nameView);
+    }
+
+    public interface OnTweetReplyListener {
+        void onTweetReply(Tweet tweet);
+    }
+
+    public void setListener(OnTweetClickListener mListener) {
+        this.mListener = mListener;
+    }
+
+    public void setReplyListener(OnTweetReplyListener mReplyListener) {
+        this.mReplyListener = mReplyListener;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -46,7 +67,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Tweet tweet = mTweetsList.get(position);
         if (holder instanceof TweetViewHolderSync) {
-            ((TweetViewHolderSync) holder).onBind(tweet);
+            ((TweetViewHolderSync) holder).onBind(tweet, mListener, mReplyListener);
         }
         else if (holder instanceof TweetViewHolderNotSync) {
             ((TweetViewHolderNotSync) holder).onBind(tweet);
@@ -121,16 +142,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return highestId;
     }
 
-    void onTweetJustPosted(Tweet tweet) {
-        addTweetToListTop(tweet);
+    public void onTweetRemotePosted(Tweet tweet) {
+        addTweetToPosition(0, tweet);
         updateSearchIds();
-    }
-
-    public int onTweetRemotePosted(long tempTweetId, Tweet tweet) {
-        int pos = getPositionByTweetUid(tempTweetId);
-        addTweetToPosition(pos, tweet);
-        updateSearchIds();
-        return pos == -1 ? 0 : pos;
     }
 
     private void updateSearchIds() {
@@ -160,14 +174,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             mTweetsList.add(tweet);
         }
         notifyItemInserted(0);
-    }
-
-    private int getPositionByTweetUid(long uid) {
-        int N = mTweetsList.size();
-        for (int i = 0; i < N; i++) {
-            if (mTweetsList.get(i).getUid() == uid) return i;
-        }
-        return -1;
     }
 
     @Override

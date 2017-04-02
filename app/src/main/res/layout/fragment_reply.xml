@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
+    tools:context="me.elmira.simpletwitterclient.composetweet.ComposeDialogFragment"
+    tools:showIn="@layout/fragment_compose">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:src="@drawable/twitter_social_icon_blue"/>
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/icon"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginTop="0dp"
+        android:layout_toRightOf="@+id/icon"
+        android:drawablePadding="@dimen/margin_small"
+        android:textAppearance="@style/DialogWindowTitleText"/>
+
+    <EditText
+        android:id="@+id/edBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/icon"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:gravity="start"
+        android:lines="5"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/ComposeTweet.Body"
+        android:textColorHint="@color/light_gray_text"
+        />
+
+    <Button
+        android:id="@+id/btnTweet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/edBody"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:background="@drawable/background_post_tweet"
+        android:enabled="false"
+        android:shadowColor="@color/colorPrimary"
+        android:text="@string/button_reply"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        />
+
+    <TextView
+        android:id="@+id/tvRemainingCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnTweet"
+        android:layout_below="@+id/edBody"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_toLeftOf="@+id/btnTweet"
+        android:text="hello"
+        android:textAppearance="@style/Tweet.PostRemaining"/>
+
+</RelativeLayout>
+

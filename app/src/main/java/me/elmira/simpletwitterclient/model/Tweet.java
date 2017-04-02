@@ -41,7 +41,7 @@ public class Tweet implements Parcelable {
     private int favoriteCount;
     private boolean retweeted;
     private int retweetedCount;
-    private List<TweetMedia> medias;
+    private List<EntityMedia> medias;
 
     public Tweet() {
     }
@@ -56,32 +56,31 @@ public class Tweet implements Parcelable {
         tweet.retweeted = jsonObject.has(JsonAttributes.Tweet.RETWEETED) && jsonObject.getBoolean(JsonAttributes.Tweet.RETWEETED);
         tweet.retweetedCount = jsonObject.has(JsonAttributes.Tweet.RETWEET_COUNT) ? jsonObject.getInt(JsonAttributes.Tweet.RETWEET_COUNT) : 0;
 
-        JSONArray mediaArray = jsonObject.has(JsonAttributes.Tweet.ENTITIES) ?
-                (jsonObject.has(JsonAttributes.Tweet.MEDIA) ? jsonObject.getJSONArray(JsonAttributes.Tweet.MEDIA) : null)
-                : null;
-        if (mediaArray != null) {
-            Log.d("Tweet", "JSON MEDIA: " + mediaArray.toString());
-            int N = mediaArray.length();
-            List<TweetMedia> mediaList = new ArrayList<>();
+        if (jsonObject.has(JsonAttributes.ENTITIES)) {
+            JSONObject entitiesObject = jsonObject.getJSONObject(JsonAttributes.ENTITIES);
+            JSONArray mediaArray = entitiesObject.has(JsonAttributes.Tweet.MEDIA) ? entitiesObject.getJSONArray(JsonAttributes.Tweet.MEDIA) : null;
+            if (mediaArray != null) {
+                Log.d("Tweet", "JSON MEDIA: " + mediaArray.toString());
+                int N = mediaArray.length();
+                List<EntityMedia> mediaList = new ArrayList<>();
 
-            for (int i = 0; i < N; i++) {
-                JSONObject mediaObject = mediaArray.getJSONObject(i);
-                mediaList.add(new TweetMedia(mediaObject.getString("type"), mediaObject.getString("media_url")));
+                for (int i = 0; i < N; i++) {
+                    JSONObject mediaObject = mediaArray.getJSONObject(i);
+                    mediaList.add(new EntityMedia(mediaObject.getString("type"), mediaObject.getString("media_url")));
+                }
+                tweet.setMedias(mediaList);
             }
-
-            tweet.setMedias(mediaList);
         }
-
         tweet.user = User.fromJSON(jsonObject.getJSONObject(JsonAttributes.Tweet.USER));
         tweet.sync = true;
         return tweet;
     }
 
-    public List<TweetMedia> getMedias() {
+    public List<EntityMedia> getMedias() {
         return medias;
     }
 
-    public void setMedias(List<TweetMedia> medias) {
+    public void setMedias(List<EntityMedia> medias) {
         this.medias = medias;
     }
 

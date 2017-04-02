@@ -6,6 +6,7 @@ import java.util.List;
 
 import me.elmira.simpletwitterclient.model.Tweet;
 import me.elmira.simpletwitterclient.model.User;
+import me.elmira.simpletwitterclient.model.UserCursoredCollection;
 
 /**
  * Created by elmira on 3/22/17.
@@ -31,17 +32,29 @@ public interface TwitterDataSource {
         void onFailure();
     }
 
-    interface LoadCurrentUserCallback {
+    interface LoadUserCallback {
         void onUserLoaded(User user);
+
+        void onFailure();
+    }
+
+    interface LoadUserCursorCollectionCallback {
+        void onUsersLoaded(UserCursoredCollection collection);
+
+        void onFailure();
+    }
+
+    interface SearchTweetsCallback {
+        void onTweetsFound(List<Tweet> tweets);
 
         void onFailure();
     }
 
     List<Tweet> preloadTweets();
 
-    List<Tweet> loadTweets(long sinceId, long maxId);
+    void loadHomeTweets(long sinceId, long maxId, LoadTweetsCallback callback);
 
-    void loadTweets(long sinceId, long maxId, LoadTweetsCallback callback);
+    void loadUserTweets(long uid, long sinceId, long maxId, LoadTweetsCallback callback);
 
     Tweet loadTweet(@NonNull long tweetId);
 
@@ -51,9 +64,19 @@ public interface TwitterDataSource {
 
     void updateTweet(Tweet tweet, long tempId, UpdateTweetCallback callback);
 
-    void loadCurrentUser(LoadCurrentUserCallback callback);
+    void loadCurrentUser(LoadUserCallback callback);
 
     void addCurrentUser(User user);
+
+    void getMentions(long sinceId, long maxId, LoadTweetsCallback callback);
+
+    void loadUser(long userId, LoadUserCallback callback);
+
+    void loadFollowing(long userId, long cursor, LoadUserCursorCollectionCallback callback);
+
+    void loadFollowers(long userId, long cursor, LoadUserCursorCollectionCallback callback);
+
+    void searchTweets(String query, long sinceId, long maxId, SearchTweetsCallback callback);
 
     void destroy();
 }

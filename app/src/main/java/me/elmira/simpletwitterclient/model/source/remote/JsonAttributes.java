@@ -11,6 +11,12 @@ public interface JsonAttributes {
         String UID = "id";
         String PROFILE_IMAGE_URL = "profile_image_url";
         String SCREEN_NAME = "screen_name";
+        String FOLLOWERS_COUNT = "followers_count";
+        String FOLLOWING_COUNT = "friends_count";
+        String FOLLOWING = "following";
+        String BANNER_URL = "profile_banner_url";
+        String BACKGROUND_IMAGE_URL = "profile_background_image_url";
+        String DESCRIPTION = "description";
     }
 
     interface Tweet {
@@ -23,6 +29,14 @@ public interface JsonAttributes {
         String RETWEET_COUNT = "retweet_count";
         String RETWEETED = "retweeted";
         String MEDIA = "media";
-        String ENTITIES = "entities";
     }
+
+    interface UserCursorCollection {
+        String NEXT_CURSOR = "next_cursor";
+        String PREV_CURSOR = "previous_cursor";
+        String USERS = "users";
+    }
+
+    String ENTITIES = "entities";
+    String STATUSES = "statuses";
 }

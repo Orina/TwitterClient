@@ -1,4 +1,4 @@
-package me.elmira.simpletwitterclient.timeline;
+package me.elmira.simpletwitterclient.adapters.tweet;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;

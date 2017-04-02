@@ -21,4 +21,8 @@
     <color name="favorite_icon">#F06292</color>
 
     <color name="post_tweet_backg">#d1ecfc</color>
+
+    <color name="white_transparent">#00ffffff</color>
+    <color name="lightest_gray">#d7dde2</color>
+
 </resources>

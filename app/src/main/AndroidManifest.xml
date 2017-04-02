@@ -16,16 +16,11 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".timeline.TimelineActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
             android:name=".oauth.LoginActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <intent-filter>
@@ -38,6 +33,30 @@
                     android:host="codepathtweets"
                     android:scheme="oauth"/>
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".home.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <meta-data android:name="android.app.default_searchable"
+                       android:value=".SearchableActivity" />
+        </activity>
+
+        <activity
+            android:name=".userdetails.UserDetailsActivity"
+            android:label="@string/title_activity_user_details"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity android:name=".search.SearchableActivity"
+                  android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.VIEW"/>
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                       android:resource="@xml/searchable"/>
         </activity>
 
         <provider

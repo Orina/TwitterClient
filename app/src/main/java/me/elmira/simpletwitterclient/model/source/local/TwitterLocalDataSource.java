@@ -79,12 +79,12 @@ public class TwitterLocalDataSource implements TwitterDataSource {
     }
 
     @Override
-    public List<Tweet> loadTweets(long sinceId, long maxId) {
+    public void loadHomeTweets(long sinceId, long maxId, LoadTweetsCallback callback) {
         throw new UnsupportedOperationException("operation is not supported on local data source");
     }
 
     @Override
-    public void loadTweets(long sinceId, long maxId, LoadTweetsCallback callback) {
+    public void loadUserTweets(long uid, long sinceId, long maxId, LoadTweetsCallback callback) {
         throw new UnsupportedOperationException("operation is not supported on local data source");
     }
 
@@ -254,7 +254,32 @@ public class TwitterLocalDataSource implements TwitterDataSource {
     }
 
     @Override
-    public void loadCurrentUser(LoadCurrentUserCallback callback) {
+    public void loadCurrentUser(LoadUserCallback callback) {
+        throw new UnsupportedOperationException("operation is not supported on local data source");
+    }
+
+    @Override
+    public void loadUser(long userId, LoadUserCallback callback) {
+        throw new UnsupportedOperationException("operation is not supported on local data source");
+    }
+
+    @Override
+    public void getMentions(long sinceId, long maxId, LoadTweetsCallback callback) {
+        throw new UnsupportedOperationException("operation is not supported on local data source");
+    }
+
+    @Override
+    public void loadFollowing(long userId, long cursor, LoadUserCursorCollectionCallback callback) {
+        throw new UnsupportedOperationException("operation is not supported on local data source");
+    }
+
+    @Override
+    public void loadFollowers(long userId, long cursor, LoadUserCursorCollectionCallback callback) {
+        throw new UnsupportedOperationException("operation is not supported on local data source");
+    }
+
+    @Override
+    public void searchTweets(String query, long sinceId, long maxId, SearchTweetsCallback callback) {
         throw new UnsupportedOperationException("operation is not supported on local data source");
     }
 

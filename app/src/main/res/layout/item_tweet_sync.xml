@@ -23,6 +23,7 @@
             android:layout_width="@dimen/tweet_image_width"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            android:transitionName="profileImage"
             android:scaleType="fitXY"/>
 
         <TextView
@@ -35,7 +36,8 @@
             android:layout_toRightOf="@+id/ivUser"
             android:gravity="bottom"
             android:text='@{""+syncTweet.user.name}'
-            android:textAppearance="@style/Tweet.UserName"/>
+            android:textAppearance="@style/Tweet.UserName"
+            android:transitionName="profileName"/>
 
         <TextView
             android:id="@+id/tvCreatedTime"
@@ -77,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/tvTweetBody"
             android:layout_below="@+id/tvTweetBody"
+            android:layout_marginBottom="@dimen/margin_small"
             android:visibility="visible"/>
 
         <!-- Reply icon -->

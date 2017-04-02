@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:text="@string/empty_feed"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/margin_big"
         android:textColor="@color/colorPrimary"
         android:fontFamily="sans-serif-light"
         android:textSize="18sp"/>

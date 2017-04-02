@@ -4,12 +4,12 @@ package me.elmira.simpletwitterclient.model;
  * Created by elmira on 3/26/17.
  */
 
-public class TweetMedia {
+public class EntityMedia {
 
     private String type;
     private String mediaUrl;
 
-    public TweetMedia(String type, String mediaUrl) {
+    public EntityMedia(String type, String mediaUrl) {
         this.type = type;
         this.mediaUrl = mediaUrl;
     }

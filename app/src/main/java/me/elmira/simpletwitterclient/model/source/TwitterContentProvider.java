@@ -78,8 +78,8 @@ public class TwitterContentProvider extends ContentProvider {
             case USER:
                 retCursor = db.query(TwitterPersistenceContract.UserEntry.TABLE_NAME,
                         projection,
-                        null,
-                        null,
+                        selection,
+                        selectionArgs,
                         null,
                         null,
                         sortOrder);

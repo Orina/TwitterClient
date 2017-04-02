@@ -9,6 +9,7 @@ import java.util.List;
 
 import me.elmira.simpletwitterclient.model.Tweet;
 import me.elmira.simpletwitterclient.model.User;
+import me.elmira.simpletwitterclient.model.UserCursoredCollection;
 
 /**
  * Created by elmira on 3/22/17.
@@ -41,9 +42,25 @@ public class TwitterRepository implements TwitterDataSource {
     }
 
     @Override
-    public void loadTweets(final long sinceId, final long maxId, final LoadTweetsCallback callback) {
+    public void loadUserTweets(final long uid, final long sinceId, final long maxId, final LoadTweetsCallback callback) {
         //loading tweets only from remote data source
-        mRemoteDataSource.loadTweets(sinceId, maxId, new LoadTweetsCallback() {
+        mRemoteDataSource.loadUserTweets(uid, sinceId, maxId, new LoadTweetsCallback() {
+            @Override
+            public void onTweetsLoaded(List<Tweet> tweets) {
+                callback.onTweetsLoaded(tweets);
+            }
+
+            @Override
+            public void onFailure() {
+                callback.onFailure();
+            }
+        });
+    }
+
+    @Override
+    public void loadHomeTweets(final long sinceId, long maxId, final LoadTweetsCallback callback) {
+        //loading tweets only from remote data source
+        mRemoteDataSource.loadHomeTweets(sinceId, maxId, new LoadTweetsCallback() {
             @Override
             public void onTweetsLoaded(List<Tweet> tweets) {
                 addTweetsToCache(sinceId > 0, tweets);
@@ -56,12 +73,11 @@ public class TwitterRepository implements TwitterDataSource {
             @Override
             public void onFailure() {
                 callback.onFailure();
-                //loadTweets(sinceId, maxId, callback);
             }
         });
 
         if (mCurrentUser == null) {
-            loadCurrentUser(new LoadCurrentUserCallback() {
+            loadCurrentUser(new LoadUserCallback() {
                 @Override
                 public void onUserLoaded(User user) {
                     //do nothing
@@ -102,40 +118,38 @@ public class TwitterRepository implements TwitterDataSource {
     }
 
     @Override
-    public void createTweet(Tweet tweet, final CreateTweetCallback callback) {
-        final long tempId = tweet.getUid();
-
-        mLocalDataSource.createTweet(tweet, null);
-        addTweetToCacheTop(tweet);
+    public void createTweet(final Tweet tweet, final CreateTweetCallback callback) {
+        Log.d(LOG_TAG, "createTweet() " + tweet.toString());
 
         mRemoteDataSource.createTweet(tweet, new CreateTweetCallback() {
             @Override
             public void onTweetCreated(Tweet newTweet) {
                 newTweet.setSync(true);
+                Log.d(LOG_TAG, "onTweetCreated successfully. New tweet: " + newTweet.toString());
+
                 callback.onTweetCreated(newTweet);
 
-                mLocalDataSource.updateTweet(newTweet, tempId, null);
-
-                mCachedTweets.remove(tempId);
+                mLocalDataSource.createTweet(newTweet, null);
                 addTweetToCacheTop(newTweet);
             }
 
             @Override
             public void onFailure() {
+                Log.e(LOG_TAG, "can't create new tweet");
                 callback.onFailure();
             }
         });
     }
 
     @Override
-    public void loadCurrentUser(final LoadCurrentUserCallback callback) {
+    public void loadCurrentUser(final LoadUserCallback callback) {
         Log.d(LOG_TAG, "load current user...");
         if (mCurrentUser != null) {
             Log.d(LOG_TAG, "current user is not null, loading it immediately");
             callback.onUserLoaded(mCurrentUser);
             return;
         }
-        mRemoteDataSource.loadCurrentUser(new LoadCurrentUserCallback() {
+        mRemoteDataSource.loadCurrentUser(new LoadUserCallback() {
             @Override
             public void onUserLoaded(User user) {
                 Log.d(LOG_TAG, "Current user is loaded successfully!!! uid:" + user.getUid());
@@ -146,19 +160,48 @@ public class TwitterRepository implements TwitterDataSource {
 
             @Override
             public void onFailure() {
-                Log.d(LOG_TAG, "Can't load current user");
+                Log.e(LOG_TAG, "Can't load current user");
                 callback.onFailure();
             }
         });
     }
 
-    public void syncTweets(){
+    @Override
+    public void loadUser(long userId, final LoadUserCallback callback) {
+        Log.d(LOG_TAG, "Loading user ... uid: " + userId);
+        mRemoteDataSource.loadUser(userId, new LoadUserCallback() {
+            @Override
+            public void onUserLoaded(User user) {
+                Log.d(LOG_TAG, "User was successfully loaded: " + user.toString());
+                callback.onUserLoaded(user);
+            }
+
+            @Override
+            public void onFailure() {
+                Log.e(LOG_TAG, "can't load user");
+                callback.onFailure();
+            }
+        });
+    }
+
+    public void syncTweets() {
         //mLocalDataSource.
     }
 
     @Override
-    public List<Tweet> loadTweets(long sinceId, long maxId) {
-        throw new UnsupportedOperationException("operation is not supported on repository object: data is loaded via Loader.");
+    public void getMentions(long sinceId, long maxId, final LoadTweetsCallback callback) {
+        //loading mentions tweets only from remote data source
+        mRemoteDataSource.getMentions(sinceId, maxId, new LoadTweetsCallback() {
+            @Override
+            public void onTweetsLoaded(List<Tweet> tweets) {
+                callback.onTweetsLoaded(tweets);
+            }
+
+            @Override
+            public void onFailure() {
+                callback.onFailure();
+            }
+        });
     }
 
     @Override
@@ -169,6 +212,42 @@ public class TwitterRepository implements TwitterDataSource {
     @Override
     public void updateTweet(Tweet tweet, long tempId, UpdateTweetCallback callback) {
         throw new UnsupportedOperationException("operation is not supported on repository object: user is created via local data source.");
+    }
+
+    @Override
+    public void loadFollowing(long userId, long cursor, final LoadUserCursorCollectionCallback callback) {
+        mRemoteDataSource.loadFollowing(userId, cursor, new LoadUserCursorCollectionCallback() {
+            @Override
+            public void onUsersLoaded(UserCursoredCollection collection) {
+                Log.d(LOG_TAG, "Loaded following: prev cursor: "+collection.getPreviousCursor()+", next cursor: "+collection.getNextCursor());
+                callback.onUsersLoaded(collection);
+            }
+
+            @Override
+            public void onFailure() {
+                callback.onFailure();
+            }
+        });
+    }
+
+    @Override
+    public void loadFollowers(long userId, long cursor, final LoadUserCursorCollectionCallback callback) {
+        mRemoteDataSource.loadFollowers(userId, cursor, new LoadUserCursorCollectionCallback() {
+            @Override
+            public void onUsersLoaded(UserCursoredCollection collection) {
+                callback.onUsersLoaded(collection);
+            }
+
+            @Override
+            public void onFailure() {
+                callback.onFailure();
+            }
+        });
+    }
+
+    @Override
+    public void searchTweets(String query, long sinceId, long maxId, SearchTweetsCallback callback) {
+        mRemoteDataSource.searchTweets(query, sinceId, maxId, callback);
     }
 
     @Override
@@ -211,5 +290,9 @@ public class TwitterRepository implements TwitterDataSource {
 
     public User getCurrentUser() {
         return mCurrentUser;
+    }
+
+    public long getCurrentUserId() {
+        return mCurrentUser == null ? 0 : mCurrentUser.getUid();
     }
 }

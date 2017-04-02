@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+
 import me.elmira.simpletwitterclient.model.source.remote.JsonAttributes;
 
 /**
@@ -14,10 +16,20 @@ import me.elmira.simpletwitterclient.model.source.remote.JsonAttributes;
 
 public class User implements Parcelable {
 
+    private static DecimalFormat decimalFormatter = new DecimalFormat("#,###,###");
+
     private String name;
     private long uid;
     private String profileImageUrl;
     private String screenName;
+
+    private int followingCount;
+    private int followersCount;
+
+    private String bannerUrl;
+
+    private boolean following;
+    private String description;
 
     public User() {
     }
@@ -27,10 +39,18 @@ public class User implements Parcelable {
         user.name = jsonObject.getString(JsonAttributes.User.NAME);
         user.uid = jsonObject.getLong(JsonAttributes.User.UID);
         user.profileImageUrl = jsonObject.getString(JsonAttributes.User.PROFILE_IMAGE_URL);
-        if (user.profileImageUrl!=null && user.profileImageUrl.contains("_normal.")){
+        if (user.profileImageUrl != null && user.profileImageUrl.contains("_normal.")) {
             user.profileImageUrl = user.profileImageUrl.replace("_normal.", ".");
         }
         user.screenName = jsonObject.getString(JsonAttributes.User.SCREEN_NAME);
+        user.following = jsonObject.has(JsonAttributes.User.FOLLOWING) && jsonObject.getBoolean(JsonAttributes.User.FOLLOWING);
+
+        user.followersCount = jsonObject.getInt(JsonAttributes.User.FOLLOWERS_COUNT);
+        user.followingCount = jsonObject.getInt(JsonAttributes.User.FOLLOWING_COUNT);
+
+        user.bannerUrl = jsonObject.has(JsonAttributes.User.BANNER_URL) ? jsonObject.getString(JsonAttributes.User.BANNER_URL) : null;
+        user.description = jsonObject.has(JsonAttributes.User.DESCRIPTION) ? jsonObject.getString(JsonAttributes.User.DESCRIPTION) : null;
+
         return user;
     }
 
@@ -70,6 +90,34 @@ public class User implements Parcelable {
         return "@" + screenName;
     }
 
+    public int getFollowingCount() {
+        return followingCount;
+    }
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public String getBannerUrl() {
+        return bannerUrl;
+    }
+
+    public boolean isFollowing() {
+        return following;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getFormattedFollowingCount() {
+        return decimalFormatter.format(followingCount);
+    }
+
+    public String getFormattedFollowersCount() {
+        return decimalFormatter.format(followersCount);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,8 +140,13 @@ public class User implements Parcelable {
                 ", uid=" + uid +
                 ", profileImageUrl='" + profileImageUrl + '\'' +
                 ", screenName='" + screenName + '\'' +
+                ", followingCount=" + followingCount +
+                ", followersCount=" + followersCount +
+                ", bannerUrl='" + bannerUrl + '\'' +
+                ", following=" + following +
                 '}';
     }
+
 
     @Override
     public int describeContents() {
@@ -106,6 +159,11 @@ public class User implements Parcelable {
         dest.writeLong(this.uid);
         dest.writeString(this.profileImageUrl);
         dest.writeString(this.screenName);
+        dest.writeInt(this.followingCount);
+        dest.writeInt(this.followersCount);
+        dest.writeString(this.bannerUrl);
+        dest.writeByte(this.following ? (byte) 1 : (byte) 0);
+        dest.writeString(this.description);
     }
 
     protected User(Parcel in) {
@@ -113,6 +171,11 @@ public class User implements Parcelable {
         this.uid = in.readLong();
         this.profileImageUrl = in.readString();
         this.screenName = in.readString();
+        this.followingCount = in.readInt();
+        this.followersCount = in.readInt();
+        this.bannerUrl = in.readString();
+        this.following = in.readByte() != 0;
+        this.description = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
